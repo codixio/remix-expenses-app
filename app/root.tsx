@@ -1,36 +1,30 @@
 import {
-  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  isRouteErrorResponse,
-  useRouteError
-} from "@remix-run/react";
-import styles from './styles/main.css?url';
-import MainNavigation from "./components/MainNavigation";
+} from '@remix-run/react';
+
+import sharedStyles from './styles/shared.css?url';
 
 export const meta = () => [
   {
-    charset: "utf-8",
-    title: "Easy Expenses App",
-    viewport: "width=device-width,initial-scale=1",
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
   },
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export default function App() {
   return (
-    <html lang="en">
+    <html lang='en'>
       <head>
         <Meta />
         <Links />
       </head>
       <body>
-        <header>
-          <MainNavigation />
-        </header>
-        {children}
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -38,50 +32,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  return <Outlet />;
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-
-  if (isRouteErrorResponse(error)) {
-    if (error.status === 200) {
-      return (
-        <main className="info">
-          <p>{error.data}</p>
-        </main>
-      );
-    }
-    else { 
-      return (
-        <main className="error">
-          <h1>Oops! Something went wrong</h1>
-          <p><strong>Error: </strong>{error.status} {error.statusText}</p>
-          <p>{error.data}</p>
-          <p><Link to="/">Return to the homepage</Link></p>
-        </main>
-      );
-    }
-  } else if (error instanceof Error) {
-    return (
-      <main className="error">
-        <h1>Oops! Something went wrong</h1>
-        <p><strong>Error: </strong>{error.message}</p>
-        <p><Link to="/">Return to the homepage</Link></p>
-      </main>
-    );
-  } else {
-    return (
-      <main className="error">
-        <h1>Oops! Something went wrong</h1>
-        <p><strong>Error: </strong>An unknown error occurred</p>
-        <p><Link to="/">Return to the homepage</Link></p>
-      </main>
-    );
-  }
-}
-
 export function links() {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [{ rel: 'stylesheet', href: sharedStyles }];
 }
